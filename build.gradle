@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'signing'
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.5"
 }
 
 repositories {
@@ -58,7 +59,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             customizePom(pom)
-            groupId 'com.testvagrant.ekam'
+            groupId 'dunzoit'
             artifactId 'ekam-drivers'
             version '1.0.4'
 
@@ -76,13 +77,13 @@ publishing {
 
     repositories {
         maven {
-            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            credentials {
-                username System.getenv("sonatypeUsername")
-                password System.getenv("sonatypePassword")
+            url "artifactregistry://asia-south1-maven.pkg.dev/dev-application-294611/maven-qe"
+//            credentials {
+//                username System.getenv("sonatypeUsername")
+//                password System.getenv("sonatypePassword")
 //                username sonatypeUsername
 //                password sonatypePassword
-            }
+//            }
         }
     }
 }
@@ -102,33 +103,22 @@ def customizePom(pom) {
 
             description 'Ekam Drivers Project to create web and mobile drivers'
             name 'Ekam Drivers'
-            url 'https://github.com/testvagrant/ekam-drivers'
-            organization {
-                name 'com.testvagrant.ekam'
-                url 'https://github.com/testvagrant'
-            }
-            issueManagement {
-                system 'GitLab'
-                url 'https://github.com/testvagrant/ekam-drivers/issues'
-            }
+            url 'https://github.com/dunzoit/ekam-drivers'
             licenses {
                 license {
                     name 'MIT License'
-                    url 'https://github.com/testvagrant/ekam-drivers/-/blob/master/LICENSE'
+                    url 'https://github.com/dunzoit/ekam-drivers/-/blob/master/LICENSE'
                     distribution 'repo'
                 }
             }
             scm {
-                url 'https://github.com/testvagrant/ekam-drivers'
-                connection 'https://github.com/testvagrant/ekam-drivers.git'
-                developerConnection 'git@github.com:testvagrant/ekam-drivers.git'
+                url 'https://github.com/dunzoit/ekam-drivers'
+                connection 'https://github.com/dunzoit/ekam-drivers.git'
+                developerConnection 'git@github.com:dunzoit/ekam-drivers.git'
             }
             developers {
                 developer {
-                    name 'Sudarshan GS'
-                }
-                developer {
-                    name 'Krishnanand B'
+                    name 'Central QA'
                 }
             }
         }
@@ -139,9 +129,4 @@ model {
     tasks.generatePomFileForMavenJavaPublication {
         destination = file("$buildDir/generated-pom.xml")
     }
-}
-
-
-signing {
-    sign publishing.publications
 }
